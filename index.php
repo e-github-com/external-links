@@ -1,46 +1,45 @@
 <?php
-	#123
-        # задачи
+        # Г§Г Г¤Г Г·ГЁ
 	# http://remontokon-yes.ru/
-	# 1. Фильтр входных данных (убрать пустые урлы и строки с текстом)
-        # 2. Допилить режим - Показать не закрытые
-	# 3, Сделать кнопку - Проверить незакрытые (рядом с кнопкой - Показать не закрытые)
-    # 4. Сделать кнопку обновить для конкретной странички
-    # 5. В alt ссылки дописать номер строки где она была найдена
-    # 6. Сделать возможность редактирования автоматически определенного адреса сайта
+	# 1. Г”ГЁГ«ГјГІГ° ГўГµГ®Г¤Г­Г»Гµ Г¤Г Г­Г­Г»Гµ (ГіГЎГ°Г ГІГј ГЇГіГ±ГІГ»ГҐ ГіГ°Г«Г» ГЁ Г±ГІГ°Г®ГЄГЁ Г± ГІГҐГЄГ±ГІГ®Г¬)
+        # 2. Г„Г®ГЇГЁГ«ГЁГІГј Г°ГҐГ¦ГЁГ¬ - ГЏГ®ГЄГ Г§Г ГІГј Г­ГҐ Г§Г ГЄГ°Г»ГІГ»ГҐ
+	# 3, Г‘Г¤ГҐГ«Г ГІГј ГЄГ­Г®ГЇГЄГі - ГЏГ°Г®ГўГҐГ°ГЁГІГј Г­ГҐГ§Г ГЄГ°Г»ГІГ»ГҐ (Г°ГїГ¤Г®Г¬ Г± ГЄГ­Г®ГЇГЄГ®Г© - ГЏГ®ГЄГ Г§Г ГІГј Г­ГҐ Г§Г ГЄГ°Г»ГІГ»ГҐ)
+    # 4. Г‘Г¤ГҐГ«Г ГІГј ГЄГ­Г®ГЇГЄГі Г®ГЎГ­Г®ГўГЁГІГј Г¤Г«Гї ГЄГ®Г­ГЄГ°ГҐГІГ­Г®Г© Г±ГІГ°Г Г­ГЁГ·ГЄГЁ
+    # 5. Г‚ alt Г±Г±Г»Г«ГЄГЁ Г¤Г®ГЇГЁГ±Г ГІГј Г­Г®Г¬ГҐГ° Г±ГІГ°Г®ГЄГЁ ГЈГ¤ГҐ Г®Г­Г  ГЎГ»Г«Г  Г­Г Г©Г¤ГҐГ­Г 
+    # 6. Г‘Г¤ГҐГ«Г ГІГј ГўГ®Г§Г¬Г®Г¦Г­Г®Г±ГІГј Г°ГҐГ¤Г ГЄГІГЁГ°Г®ГўГ Г­ГЁГї Г ГўГІГ®Г¬Г ГІГЁГ·ГҐГ±ГЄГЁ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г Г¤Г°ГҐГ±Г  Г±Г Г©ГІГ 
 
-	//в сессию будем сохранять результат
+	//Гў Г±ГҐГ±Г±ГЁГѕ ГЎГіГ¤ГҐГ¬ Г±Г®ГµГ°Г Г­ГїГІГј Г°ГҐГ§ГіГ«ГјГІГ ГІ
 	session_start();
 
-	$site;                         //адрес сайта
-	$ar_result_check = array();    //массив результата проверки
-	$html_result_check;            //html результат проверки страниц
+	$site;                         //Г Г¤Г°ГҐГ± Г±Г Г©ГІГ 
+	$ar_result_check = array();    //Г¬Г Г±Г±ГЁГў Г°ГҐГ§ГіГ«ГјГІГ ГІГ  ГЇГ°Г®ГўГҐГ°ГЄГЁ
+	$html_result_check;            //html Г°ГҐГ§ГіГ«ГјГІГ ГІ ГЇГ°Г®ГўГҐГ°ГЄГЁ Г±ГІГ°Г Г­ГЁГ¶
 
-	$_SESSION['input_data'];       //переменная для хранения входных данных в сессии
-	$_SESSION['site'];             //переменная для хранения адреса сайта в сессии
-	$_SESSION['ar_result_check'];  //массив для хранения результатов проверки в сессии
+	$_SESSION['input_data'];       //ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г Гї Г¤Г«Гї ГµГ°Г Г­ГҐГ­ГЁГї ГўГµГ®Г¤Г­Г»Гµ Г¤Г Г­Г­Г»Гµ Гў Г±ГҐГ±Г±ГЁГЁ
+	$_SESSION['site'];             //ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г Гї Г¤Г«Гї ГµГ°Г Г­ГҐГ­ГЁГї Г Г¤Г°ГҐГ±Г  Г±Г Г©ГІГ  Гў Г±ГҐГ±Г±ГЁГЁ
+	$_SESSION['ar_result_check'];  //Г¬Г Г±Г±ГЁГў Г¤Г«Гї ГµГ°Г Г­ГҐГ­ГЁГї Г°ГҐГ§ГіГ«ГјГІГ ГІГ®Гў ГЇГ°Г®ГўГҐГ°ГЄГЁ Гў Г±ГҐГ±Г±ГЁГЁ
 
-    //если пользователь нажал отправить
+    //ГҐГ±Г«ГЁ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гј Г­Г Г¦Г Г« Г®ГІГЇГ°Г ГўГЁГІГј
 	if(isset($_POST['start'])) {
-		//если введены урлы
+		//ГҐГ±Г«ГЁ ГўГўГҐГ¤ГҐГ­Г» ГіГ°Г«Г»
 		if(!empty($_POST['pages-outer-links'])) {
 			try {
-				//сохраняем входные данные
+				//Г±Г®ГµГ°Г Г­ГїГҐГ¬ ГўГµГ®Г¤Г­Г»ГҐ Г¤Г Г­Г­Г»ГҐ
 				$input_data = $_SESSION['input_data'] = $_POST['pages-outer-links'];
 
-				//удаляем пустые строки
+				//ГіГ¤Г Г«ГїГҐГ¬ ГЇГіГ±ГІГ»ГҐ Г±ГІГ°Г®ГЄГЁ
 				//$input_data = preg_replace("%\n\s*\n%siU", "\n", $input_data);
-				// очищаем строки с урлами от текста
+				// Г®Г·ГЁГ№Г ГҐГ¬ Г±ГІГ°Г®ГЄГЁ Г± ГіГ°Г«Г Г¬ГЁ Г®ГІ ГІГҐГЄГ±ГІГ 
 				//$input_data = preg_replace("%\n.*(http(s)?://\S{5,})[^\n]*%siU", "\n$1", $input_data);
 				//echo $input_data;
 				//exit; 
 
-				//получаем массив урл-ов
+				//ГЇГ®Г«ГіГ·Г ГҐГ¬ Г¬Г Г±Г±ГЁГў ГіГ°Г«-Г®Гў
 				$arPagesOutLinks = explode("\r\n", $input_data);
 				if(!is_array($arPagesOutLinks))
-					throw new Exception("Нет массива урлов");
+					throw new Exception("ГЌГҐГІ Г¬Г Г±Г±ГЁГўГ  ГіГ°Г«Г®Гў");
                 
-                // очищаем строки с урлами от текста
+                // Г®Г·ГЁГ№Г ГҐГ¬ Г±ГІГ°Г®ГЄГЁ Г± ГіГ°Г«Г Г¬ГЁ Г®ГІ ГІГҐГЄГ±ГІГ 
 				//foreach ($arPagesOutLinks as $key => $p_link) {
 					//if(preg_match('%http(s)?://\S{5,}%', $p_link, $match))
 					//	$arPagesOutLinks[$key] = $match[0];
@@ -49,55 +48,55 @@
 					//$p_link = preg_replace('%.*(http(s)?://\S{5,})%siU', '$1', $p_link);
 					//$arPagesOutLinks[$key] = $p_link;
 
-					// чистим адреса от боковых пробелов если есть
+					// Г·ГЁГ±ГІГЁГ¬ Г Г¤Г°ГҐГ±Г  Г®ГІ ГЎГ®ГЄГ®ГўГ»Гµ ГЇГ°Г®ГЎГҐГ«Г®Гў ГҐГ±Г«ГЁ ГҐГ±ГІГј
 					//$arPagesOutLinks[$key] = trim($p_link);
 				
 					//echo $arPagesOutLinks[$key]."<br>";
 				//}
 				//exit;
 
-				//очищаем массив от дублей
+				//Г®Г·ГЁГ№Г ГҐГ¬ Г¬Г Г±Г±ГЁГў Г®ГІ Г¤ГіГЎГ«ГҐГ©
 				$arPagesOutLinks = array_unique($arPagesOutLinks);
 
-				//получем адрес нашего сайта по первому урлу
+				//ГЇГ®Г«ГіГ·ГҐГ¬ Г Г¤Г°ГҐГ± Г­Г ГёГҐГЈГ® Г±Г Г©ГІГ  ГЇГ® ГЇГҐГ°ГўГ®Г¬Гі ГіГ°Г«Гі
 				if(preg_match('%https?://([^/$]*)(/.*)?$%siU', $arPagesOutLinks[0], $match))
 				//if(preg_match('%https?://([^/$]*)/?$%siU', $arPagesOutLinks[0], $match))
 					$site = $match[1];
 					//echo $match[1];
 				else
-					throw new Exception("Не могу определить сайт");
+					throw new Exception("ГЌГҐ Г¬Г®ГЈГі Г®ГЇГ°ГҐГ¤ГҐГ«ГЁГІГј Г±Г Г©ГІ");
 
-				//проверяем урлы на наличие внешних ссылок не закрытых в rel="nofollow"
-				//$ar_result_check   - глобальный массив результата проверки
-				//$html_result_check - глобальная переменная - результат проверки страниц в html
+				//ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ ГіГ°Г«Г» Г­Г  Г­Г Г«ГЁГ·ГЁГҐ ГўГ­ГҐГёГ­ГЁГµ Г±Г±Г»Г«Г®ГЄ Г­ГҐ Г§Г ГЄГ°Г»ГІГ»Гµ Гў rel="nofollow"
+				//$ar_result_check   - ГЈГ«Г®ГЎГ Г«ГјГ­Г»Г© Г¬Г Г±Г±ГЁГў Г°ГҐГ§ГіГ«ГјГІГ ГІГ  ГЇГ°Г®ГўГҐГ°ГЄГЁ
+				//$html_result_check - ГЈГ«Г®ГЎГ Г«ГјГ­Г Гї ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г Гї - Г°ГҐГ§ГіГ«ГјГІГ ГІ ГЇГ°Г®ГўГҐГ°ГЄГЁ Г±ГІГ°Г Г­ГЁГ¶ Гў html
 				foreach ($arPagesOutLinks as $key => $url_page) {
-					//загружаем страничку $url_page
+					//Г§Г ГЈГ°ГіГ¦Г ГҐГ¬ Г±ГІГ°Г Г­ГЁГ·ГЄГі $url_page
 					$page = file_get_contents($url_page);
-					if(!$page) { //если страника не загрузилась или пуста, то переходим к следующей
+					if(!$page) { //ГҐГ±Г«ГЁ Г±ГІГ°Г Г­ГЁГЄГ  Г­ГҐ Г§Г ГЈГ°ГіГ§ГЁГ«Г Г±Гј ГЁГ«ГЁ ГЇГіГ±ГІГ , ГІГ® ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ ГЄ Г±Г«ГҐГ¤ГіГѕГ№ГҐГ©
 						$ar_result_check[$url_page] = 'error_loading';
 						continue;
 					}
-					if(empty($page)) { //если страника пуста, то переходим к следующей
+					if(empty($page)) { //ГҐГ±Г«ГЁ Г±ГІГ°Г Г­ГЁГЄГ  ГЇГіГ±ГІГ , ГІГ® ГЇГҐГ°ГҐГµГ®Г¤ГЁГ¬ ГЄ Г±Г«ГҐГ¤ГіГѕГ№ГҐГ©
 						$ar_result_check[$url_page] = 'clear_page';
 						continue;
 					}
 
-					//чистим страничку от html комментариев
+					//Г·ГЁГ±ГІГЁГ¬ Г±ГІГ°Г Г­ГЁГ·ГЄГі Г®ГІ html ГЄГ®Г¬Г¬ГҐГ­ГІГ Г°ГЁГҐГў
 					$page = preg_replace('%<!--.*-->%siU', '', $page);
 
-					//ищем не закрытые в rel="nofollow" ссылки, кроме ссылок c http на сам сайт
+					//ГЁГ№ГҐГ¬ Г­ГҐ Г§Г ГЄГ°Г»ГІГ»ГҐ Гў rel="nofollow" Г±Г±Г»Г«ГЄГЁ, ГЄГ°Г®Г¬ГҐ Г±Г±Г»Г«Г®ГЄ c http Г­Г  Г±Г Г¬ Г±Г Г©ГІ
 					//if(preg_match_all('%<a[^>]*href\s*=\s*[\'"](https?://(?!'.$site.')[^>]*)[\'"][^>]*>%siU', $page, $matches, PREG_PATTERN_ORDER)) {
 					if(preg_match_all('%<a[^>]*href\s*=\s*[\'"]\s*(https?://(?!'.$site.')[^\'"]*)[\'"][^>]*>%siU', $page, $matches, PREG_PATTERN_ORDER)) {
-						// $matches[0][$i] - весь html код ссылки
-						// $matches[1][$i] - только анкор ссылки
+						// $matches[0][$i] - ГўГҐГ±Гј html ГЄГ®Г¤ Г±Г±Г»Г«ГЄГЁ
+						// $matches[1][$i] - ГІГ®Г«ГјГЄГ® Г Г­ГЄГ®Г° Г±Г±Г»Г«ГЄГЁ
 						for($i=0; $i<count($matches[0]); $i++) {
-							//если нет rel="nofollow" у ссылки
+							//ГҐГ±Г«ГЁ Г­ГҐГІ rel="nofollow" Гі Г±Г±Г»Г«ГЄГЁ
 							if(!preg_match('%\s+rel\s*=\s*[\'"]?\s*nofollow\s*[\'"]?%siU',$matches[0][$i]))
 								$link_color = 'red';
-							else //если есть
+							else //ГҐГ±Г«ГЁ ГҐГ±ГІГј
 								$link_color = 'blue';
 
-							//добавляем в массив результата ссылку и её цвет
+							//Г¤Г®ГЎГ ГўГ«ГїГҐГ¬ Гў Г¬Г Г±Г±ГЁГў Г°ГҐГ§ГіГ«ГјГІГ ГІГ  Г±Г±Г»Г«ГЄГі ГЁ ГҐВё Г¶ГўГҐГІ
 							$ar_result_check[$url_page][$matches[1][$i]] = $link_color;
 						}
 					}
@@ -105,11 +104,11 @@
 						$ar_result_check[$url_page] = 'not_outlinks';
 				}
 
-				//печать результата
+				//ГЇГҐГ·Г ГІГј Г°ГҐГ§ГіГ«ГјГІГ ГІГ 
 				//echo '<!--'; print_r($ar_result_check); echo '-->';
 				print_result_cheking();
 
-				//результаты проверки сохраняем в сессию
+				//Г°ГҐГ§ГіГ«ГјГІГ ГІГ» ГЇГ°Г®ГўГҐГ°ГЄГЁ Г±Г®ГµГ°Г Г­ГїГҐГ¬ Гў Г±ГҐГ±Г±ГЁГѕ
 				$_SESSION['ar_result_check'] = $ar_result_check;
 				$_SESSION['site'] = $site;
 
@@ -120,49 +119,49 @@
 		}
 	}
 
-	//если пользователь нажал - показать всё
+	//ГҐГ±Г«ГЁ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гј Г­Г Г¦Г Г« - ГЇГ®ГЄГ Г§Г ГІГј ГўГ±Вё
 	if(isset($_POST['show_all'])) {
 		$ar_result_check = $_SESSION['ar_result_check'];
 		print_result_cheking();
 	}
 
-	//если пользователь нажал - показать не закрытые
+	//ГҐГ±Г«ГЁ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гј Г­Г Г¦Г Г« - ГЇГ®ГЄГ Г§Г ГІГј Г­ГҐ Г§Г ГЄГ°Г»ГІГ»ГҐ
 	if(isset($_POST['show_no_rel'])) {
 		$ar_result_check = $_SESSION['ar_result_check'];
 		print_result_cheking('no_nofollow');
 	}
 
-	// функция печати результата проверки
+	// ГґГіГ­ГЄГ¶ГЁГї ГЇГҐГ·Г ГІГЁ Г°ГҐГ§ГіГ«ГјГІГ ГІГ  ГЇГ°Г®ГўГҐГ°ГЄГЁ
 	function print_result_cheking($mode) {
-		global $ar_result_check;    //глобальный массив результата проверки
-		global $html_result_check;  //глобальная переменная - результат проверки страниц в html
+		global $ar_result_check;    //ГЈГ«Г®ГЎГ Г«ГјГ­Г»Г© Г¬Г Г±Г±ГЁГў Г°ГҐГ§ГіГ«ГјГІГ ГІГ  ГЇГ°Г®ГўГҐГ°ГЄГЁ
+		global $html_result_check;  //ГЈГ«Г®ГЎГ Г«ГјГ­Г Гї ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г Гї - Г°ГҐГ§ГіГ«ГјГІГ ГІ ГЇГ°Г®ГўГҐГ°ГЄГЁ Г±ГІГ°Г Г­ГЁГ¶ Гў html
 
 		foreach($ar_result_check as $url_page => $value) {
 			$html_result_check.= '<table cellspacing="0" class="page-links">';
 
-			if($ar_result_check[$url_page] == 'error_loading') {      // если произошла ошибка при загрузке
+			if($ar_result_check[$url_page] == 'error_loading') {      // ГҐГ±Г«ГЁ ГЇГ°Г®ГЁГ§Г®ГёГ«Г  Г®ГёГЁГЎГЄГ  ГЇГ°ГЁ Г§Г ГЈГ°ГіГ§ГЄГҐ
 				$html_result_check .= '<tr class="header">
-								    <td class="link-page" colspan="2"><span style="font-weight:bold;">! Не удалось загрузить</span> - <a target="_blank" href="'.$url_page.'">'.$url_page.'</a></td>
+								    <td class="link-page" colspan="2"><span style="font-weight:bold;">! ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г§Г ГЈГ°ГіГ§ГЁГІГј</span> - <a target="_blank" href="'.$url_page.'">'.$url_page.'</a></td>
 							    </tr>';
 			} 
-			else if ($ar_result_check[$url_page] == 'clear_page') { // если загруженная страничка оказалась пуста
+			else if ($ar_result_check[$url_page] == 'clear_page') { // ГҐГ±Г«ГЁ Г§Г ГЈГ°ГіГ¦ГҐГ­Г­Г Гї Г±ГІГ°Г Г­ГЁГ·ГЄГ  Г®ГЄГ Г§Г Г«Г Г±Гј ГЇГіГ±ГІГ 
 				$html_result_check .= '<tr class="header">
-								    <td class="link-page" colspan="2"><span style="font-weight:bold;">! Страница пуста - </span> - <a target="_blank" href="'.$url_page.'">'.$url_page.'</a></td>
+								    <td class="link-page" colspan="2"><span style="font-weight:bold;">! Г‘ГІГ°Г Г­ГЁГ¶Г  ГЇГіГ±ГІГ  - </span> - <a target="_blank" href="'.$url_page.'">'.$url_page.'</a></td>
 							    </tr>';
 			} 
 			else {
 				$html_result_check .= '<tr class="header">
-							        <td class="link-page" colspan="2">На странице - <a target="_blank" href="'.$url_page.'">'.$url_page.'</a></td>
+							        <td class="link-page" colspan="2">ГЌГ  Г±ГІГ°Г Г­ГЁГ¶ГҐ - <a target="_blank" href="'.$url_page.'">'.$url_page.'</a></td>
 						         </tr>';
 
-				if($ar_result_check[$url_page] == 'not_outlinks') {   // если на страничке ненайдено внешних ссылок
+				if($ar_result_check[$url_page] == 'not_outlinks') {   // ГҐГ±Г«ГЁ Г­Г  Г±ГІГ°Г Г­ГЁГ·ГЄГҐ Г­ГҐГ­Г Г©Г¤ГҐГ­Г® ГўГ­ГҐГёГ­ГЁГµ Г±Г±Г»Г«Г®ГЄ
 					$html_result_check .= '<tr>
-								       <td class="not-found">&nbsp;&nbsp;&nbsp;&nbsp;- Не найдено внешних ссылок</td>
+								       <td class="not-found">&nbsp;&nbsp;&nbsp;&nbsp;- ГЌГҐ Г­Г Г©Г¤ГҐГ­Г® ГўГ­ГҐГёГ­ГЁГµ Г±Г±Г»Г«Г®ГЄ</td>
 							        </tr>';
 				} 
-				else { // если всё хорошо и внешние ссылки найдены
+				else { // ГҐГ±Г«ГЁ ГўГ±Вё ГµГ®Г°Г®ГёГ® ГЁ ГўГ­ГҐГёГ­ГЁГҐ Г±Г±Г»Г«ГЄГЁ Г­Г Г©Г¤ГҐГ­Г»
 					foreach ($ar_result_check[$url_page] as $out_link => $link_color) {
-						if($mode == 'no_nofollow' and $link_color == 'blue') // режим без показа закрытых ссылок
+						if($mode == 'no_nofollow' and $link_color == 'blue') // Г°ГҐГ¦ГЁГ¬ ГЎГҐГ§ ГЇГ®ГЄГ Г§Г  Г§Г ГЄГ°Г»ГІГ»Гµ Г±Г±Г»Г«Г®ГЄ
 							continue;
 
 						$html_result_check .= '<tr>
@@ -176,22 +175,22 @@
 		}
 	}
 
-	//если есть че показать (результат)
+	//ГҐГ±Г«ГЁ ГҐГ±ГІГј Г·ГҐ ГЇГ®ГЄГ Г§Г ГІГј (Г°ГҐГ§ГіГ«ГјГІГ ГІ)
 	if(!empty($html_result_check)) {
 		$site = $_SESSION['site']; 
 
 		$html_output = 
 			'<div id="response">
-				<h2>Результаты проверки</h2>
-				<div id="site-url">Сайт - <a href="http://'.$site.'">'.$site.'</a></div>
+				<h2>ГђГҐГ§ГіГ«ГјГІГ ГІГ» ГЇГ°Г®ГўГҐГ°ГЄГЁ</h2>
+				<div id="site-url">Г‘Г Г©ГІ - <a href="http://'.$site.'">'.$site.'</a></div>
 				<div id="response-data">'.$html_result_check.'</div>
 				<div id="note">
-					<span class="red">&nbsp;</span> - не закрытые <span class="blue">&nbsp;</span> - закрытые
+					<span class="red">&nbsp;</span> - Г­ГҐ Г§Г ГЄГ°Г»ГІГ»ГҐ <span class="blue">&nbsp;</span> - Г§Г ГЄГ°Г»ГІГ»ГҐ
 				</div>
 				<div id="show_buttons">
 					<form name="form2" action="" method="POST">
-						<input name="show_all" type="submit" value="Показать все"/>
-						<input name="show_no_rel" type="submit" value="Показать не закрытые"/>
+						<input name="show_all" type="submit" value="ГЏГ®ГЄГ Г§Г ГІГј ГўГ±ГҐ"/>
+						<input name="show_no_rel" type="submit" value="ГЏГ®ГЄГ Г§Г ГІГј Г­ГҐ Г§Г ГЄГ°Г»ГІГ»ГҐ"/>
 					</form>
 				</div>
 			</div>';
@@ -204,7 +203,7 @@
 	$html = <<<HTML
 		<html>
 			<head>
-				<title>Проверка внешних ссылок</title>
+				<title>ГЏГ°Г®ГўГҐГ°ГЄГ  ГўГ­ГҐГёГ­ГЁГµ Г±Г±Г»Г«Г®ГЄ</title>
 				<meta http-equiv="content-type" content="text/html; charset=windows-1251">
 				<style>
 					#page {
@@ -256,12 +255,12 @@
 			</head>
 			<body>
 				<div id="page">
-					<h1 style="text-align:center;">Проверка внешних ссылок</h1>
+					<h1 style="text-align:center;">ГЏГ°Г®ГўГҐГ°ГЄГ  ГўГ­ГҐГёГ­ГЁГµ Г±Г±Г»Г«Г®ГЄ</h1>
 					<div id="request">
 						<form name="form1" action="" method="POST">
-							<label for="pages-outer-links"><h2>Страницы где найдены внешние ссылки:</h2></label>
+							<label for="pages-outer-links"><h2>Г‘ГІГ°Г Г­ГЁГ¶Г» ГЈГ¤ГҐ Г­Г Г©Г¤ГҐГ­Г» ГўГ­ГҐГёГ­ГЁГҐ Г±Г±Г»Г«ГЄГЁ:</h2></label>
 							<textarea id="pages-outer-links" name="pages-outer-links" rows="25">$tmp1</textarea>
-							<input name="start" type="submit" value="Проверить"/>
+							<input name="start" type="submit" value="ГЏГ°Г®ГўГҐГ°ГЁГІГј"/>
 						</form>
 					</div>
 					$html_output
