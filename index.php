@@ -27,7 +27,7 @@
 				$input_data = $_SESSION['input_data'] = $_POST['pages-outer-links'];
 
 				//удаляем пустые строки
-				//$input_data = preg_replace("%\n\s*\n%siU", "\n", $input_data);
+				$input_data = preg_replace("%\n\s*\n%siU", "\n", $input_data);
 				// очищаем строки с урлами от текста
 				//$input_data = preg_replace("%\n.*(http(s)?://\S{5,})[^\n]*%siU", "\n$1", $input_data);
 				//echo $input_data;
@@ -203,7 +203,7 @@
 		<html>
 			<head>
 				<title>Проверка внешних ссылок</title>
-				<meta http-equiv="content-type" content="text/html; charset=windows-1251">
+				<meta http-equiv="content-type" content="text/html; charset=utf-8">
 				<style>
 					#page {
 						width: 100%;
